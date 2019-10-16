@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+         <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="main.css" rel="stylesheet" id="bootstrap-css">
+<!-- Latest compiled and minified JavaScript -->
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        
+     
+    </head>
+    <body>
+       
+        <div class="card text-center col-md-6 offset-md-3">
+            <div class="card-header">
+                <div class='mb-3' ><h2>Today's Weather</h2></div>
+                <h3>   <div id='city'></div></h3>
+                <div>
+                    <select class='form-control' name='citySelected' id='citySelected'>
+                        <option>Delhi</option>
+                        <option>Toronto</option>
+                        <option>New York</option>
+                        <option>Tokoyo</option>
+                        <option>Belgium</option>
+                        <option>Paris</option>
+                        <option>Beijing</option>
+                    </select>
+                </div>
+            </div>
+              <div class="card-body" id='weatherdata'>
+              <h5 class="card-title" id='weatherDesc'></h5>
+              
+            
+            
+             <ul class="list-group list-group-flush">
+    <li class="list-group-item"><h5 class="card-title" id='temp'></h5></li>
+    <li class="list-group-item"><h5 class="card-title" id='minTemp'></h5></li>
+    <li class="list-group-item"><h5 class="card-title" id='maxTemp'></h5></li>
+  </ul>
+
+             
+              
+   
+            </div>
+          </div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="js/jquery.miranda.js" ></script>
+   <script>
+            
+      
+      
+        function changeWeather(forecast){
+                  $('#temp').html("Temp: " +JSON.stringify(forecast.main.temp));
+                                          
+                                            $('#weatherDesc').html(
+                                                  "Weather : "+ 
+                                                  forecast.weather[0].description
+                                                
+                                                  );
+                                          $('#minTemp').text("Minimum Temperature: "+JSON.stringify( 
+                                                  forecast.main.temp_min
+                                                  ));
+                                          
+                                           $('#maxTemp').text("Minimum Temperature: "+JSON.stringify( 
+                                                  forecast.main.temp_max
+                                                  ));
+                                          
+                                             $('#city').text(
+                                                  forecast.name
+                                                  );
+            }
+                
+                     $(document).ready(function(){
+                        fetch(`http://localhost:8080/Assignment2_SagrikaAggarwal_Enterprise/api/weather`)
+                        .then(function(res){
+                            return res.json()
+                            })
+                        .then(function(json){
+
+                                   const forecast = json;
+                                   console.log(forecast);
+                                   changeWeather(forecast);
+                        }); 
+                    
+                $('#citySelected').change(function(){
+                    
+                    var city = $('#citySelected').val();
+                    console.log(city);
+                     fetch(`http://localhost:8080/Assignment2_SagrikaAggarwal_Enterprise/api/weather/${city}`)
+                        .then(function(res){
+                            return res.json()
+                            })
+                        .then(function(json){
+
+                                   const forecast = json;
+                                   console.log(forecast);
+                                   changeWeather(forecast);
+                        }); 
+                    
+                    socket.send(JSON.stringify(messageobj));
+                    
+                    return false;
+                });
+                
+                
+              
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,8 @@
+model\Main.class
+service\ApplicationConfig.class
+model\Forecast.class
+model\Wind.class
+service\WeatherService.class
+model\Coordinate.class
+model\Sys.class
+model\Weather.class

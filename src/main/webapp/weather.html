@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+            <link href="main.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+           <script>
+            
+                   function ShowWeather(){
+                var message = JSON.parse(response.data);
+                var messageDiv = document.createElement('div');
+                messageDiv.innerHTML= message.date + "- "+  message.author+'-' + message.text;
+                $('#chatDiv').append(messageDiv);
+            }
+                
+                     $(document).ready(function(){
+                        fetch(`http://localhost:8080/Assignment2_SagrikaAggarwal_Enterprise/api/weather`)
+                        .then(function(res){
+                            return res.json()
+                            })
+                        .then(function(json){
+
+                                   const forecast = json;
+                                    console.log(forecast);
+                                   
+//                                      var x = document.createElement("IMG");
+//                                        x.setAttribute("src", photo.url);
+//                                        x.setAttribute("width", "100");
+//                                        x.setAttribute("height", "100");
+//                                        document.body.appendChild(x);
+//                                        var br = document.createElement(br);
+//                                         document.body.appendChild(br);
+
+                                         document.getElementById('temp').innerHTML = forecast.main.temp;
+
+                                         $('#temp').html(JSON.stringify(forecast.main.temp));
+                                          $('#weatherDesc').html(
+                                                  JSON.stringify(
+                                                  forecast.weather[0].description
+                                                  )
+                                                  );
+
+                        }); 
+                    
+                $('#submit').click(function(){
+                    
+                    var message = $('#message').val();
+                    var author = $('#author').val();
+                    var action = 'send';
+                    
+                    var messageobj = {acion:action,text:message,author:author};
+                    
+                    socket.send(JSON.stringify(messageobj));
+                    
+                    return false;
+                });
+                
+                
+                 $('#history').click(function(){
+                    
+                    var action = 'list';
+//                    
+                    var messageobj = {acion:action};
+                   
+                     socket.send(JSON.stringify(messageobj));
+                    
+                    return false;
+               
+            });
+            });
+        </script>
+    </head>
+    <body>
+      <div class="container">
+	<div class="row">
+		<div class="col">
+			<div class="weather-card one">
+				<div class="top">
+					<div class="wrapper">
+						<div class="mynav">
+							<a href="javascript:;"><span class="lnr lnr-chevron-left"></span></a>
+							<a href="javascript:;"><span class="lnr lnr-cog"></span></a>
+						</div>
+						<h1 class="heading" id="weatherDesc"></h1>
+						<h3 class="location">Dhaka, Bangladesh</h3>
+						<p class="temp">
+							<span class="temp-value" id='temp'></span>
+							<span class="deg">0</span>
+							<a href="javascript:;"><span class="temp-type">F</span></a>
+						</p>
+					</div>
+				</div>
+				<div class="bottom">
+					<div class="wrapper">
+						<ul class="forecast">
+							<a href="javascript:;"><span class="lnr lnr-chevron-up go-up"></span></a>
+							<li class="active">
+								<span class="date">Yesterday</span>
+								<span class="lnr lnr-sun condition">
+									<span class="temp">23<span class="deg">0</span><span class="temp-type">C</span></span>
+								</span>
+							</li>
+							<li>
+								<span class="date">Tomorrow</span>
+								<span class="lnr lnr-cloud condition">
+									<span class="temp">21<span class="deg">0</span><span class="temp-type">C</span></span>
+								</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+        </div>
+      </div>
+    </body>
+</html>
